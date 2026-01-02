@@ -1,5 +1,6 @@
-# Mindustry Java Mod Template
-A Java Mindustry mod template that works on Android and PC. The Kotlin version of this mod can be seen [here](https://github.com/Anuken/MindustryKotlinModTemplate).
+# AdharaCRA's Test Mod
+A Java Mindustry mod template that works on Android and PC.
+Adds a iced planet on the new Solar System.
 
 ## Building for Desktop Testing
 
