@@ -1,16 +1,8 @@
 package crstar.content;
 
-import arc.*;
-import arc.graphics.*;
-import arc.math.*;
-import arc.struct.Seq;
-import mindustry.content.StatusEffects;
-import mindustry.gen.Sounds;
+import arc.graphics.Color;
 import mindustry.gen.Unit;
-import mindustry.type.*;
-
-import static mindustry.Vars.*;
-import static mindustry.content.StatusEffects.*;
+import mindustry.type.StatusEffect;
 
 public class CRStatusEffects {
     public static StatusEffect

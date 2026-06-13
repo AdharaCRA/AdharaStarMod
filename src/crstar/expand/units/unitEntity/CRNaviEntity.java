@@ -11,8 +11,9 @@ import crstar.entities.abilities.CRForceFieldAbility;
 import crstar.expand.units.CRUnitRegister;
 import mindustry.Vars;
 import mindustry.content.Fx;
-import mindustry.content.StatusEffects;
-import mindustry.gen.*;
+import mindustry.gen.Groups;
+import mindustry.gen.Unit;
+import mindustry.gen.UnitWaterMove;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.type.StatusEffect;
@@ -39,6 +40,7 @@ public class CRNaviEntity extends UnitWaterMove {
     public int classId(){
         return CRUnitRegister.getID(CRNaviEntity.class);
     }
+
     public void ExecuteApply(Unit u) {
         u.health -= Math.max(u.health , (u.maxHealth - u.health) )*0.16f;
         statuses = Vars.content.statusEffects();
