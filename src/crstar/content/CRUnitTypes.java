@@ -2,30 +2,44 @@ package crstar.content;
 
 import arc.func.Cons;
 import arc.graphics.Color;
-import arc.graphics.g2d.*;
-import arc.math.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
-import arc.struct.*;
+import arc.struct.Seq;
 import arc.util.Tmp;
+import crstar.CloudRainStar;
+import crstar.entities.abilities.CRForceFieldAbility;
+import crstar.entities.abilities.ShockWaveDefenseAbility;
+import crstar.expand.bullets.CREmpBulletType;
+import crstar.expand.bullets.EffectBulletType;
 import crstar.expand.units.unitEntity.CRNaviEntity;
+import crstar.expand.units.unitType.CRNaviUnitType;
 import crstar.type.weapons.TractorBeamWeapon;
 import mindustry.Vars;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Effect;
+import mindustry.entities.Sized;
+import mindustry.entities.abilities.Ability;
+import mindustry.entities.abilities.SuppressionFieldAbility;
 import mindustry.entities.bullet.*;
-import mindustry.entities.effect.*;
-import mindustry.entities.part.*;
+import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
+import mindustry.entities.effect.WaveEffect;
+import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.type.ammo.*;
-
-import crstar.CloudRainStar;
-import crstar.expand.bullets.*;
-import crstar.expand.units.unitType.*;
-import crstar.entities.abilities.*;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
+import mindustry.type.Weapon;
+import mindustry.type.ammo.ItemAmmoType;
 import mindustry.type.weapons.RepairBeamWeapon;
 import mindustry.ui.Bar;
 
@@ -593,7 +607,6 @@ public class CRUnitTypes {
                 rotateSpeed = 0.6f;
                 faceTarget = false;
                 ammoType = new ItemAmmoType(CRItems.cloudRainAlloy);
-
                 trailLength = 30;
                 waveTrailX = 40f;
                 abilities.addAll(
