@@ -24,6 +24,7 @@ ext{
     sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 }
 
+
 //java 8 backwards compatibility flag
 allprojects{
     tasks.withType(JavaCompile){
@@ -36,6 +37,7 @@ dependencies{
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
     annotationProcessor "com.github.Anuken:jabel:$jabelVersion"
+    //annotationProcessor "com.github.Anuken.Mindustry:annotations:bleeding-edge"
 }
 
 //force arc version
