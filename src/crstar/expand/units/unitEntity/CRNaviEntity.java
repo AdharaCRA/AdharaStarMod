@@ -42,9 +42,11 @@ public class CRNaviEntity extends UnitWaterMove {
     }
 
     public void ExecuteApply(Unit u) {
+        if(!u.isAdded()) return;
+        if(u.healthf()<=0.2f) u.kill();
         u.health -= Math.max(u.health , (u.maxHealth - u.health) )*0.16f;
-        statuses = Vars.content.statusEffects();
-        statuses.retainAll(s -> s.disarm || (s.healthMultiplier*s.damageMultiplier*s.speedMultiplier*s.reloadMultiplier > 0.5&&s.damage>0));
+        statuses = Vars.content.statusEffects().copy();
+        statuses.retainAll(s -> s.disarm || (s.healthMultiplier*s.damageMultiplier*s.speedMultiplier*s.reloadMultiplier < 1&&s.damage>0));
         for(StatusEffect s : statuses){
             u.apply(s,300f);
         }
@@ -58,27 +60,29 @@ public class CRNaviEntity extends UnitWaterMove {
         if (recentDamage >= maxDamageAmount) {
             recentDamage = maxDamageAmount;
         }
-        warmup = Mathf.lerpDelta(this.warmup,1.0F, 0.005F);
+        warmup = Mathf.lerpDelta(this.warmup,this.healthf()<0.5f? 1.0F : 0.0F, 0.005F);
+        this.damageMultiplier = 1 + Math.min(Math.max(this.maxHealth - this.health, 0f), this.maxHealth * 0.5f) / this.maxHealth / healthDelta * damageDelta;
 
-        rot +=Time.delta*rotSpeed;
-        if(rot>=360f) rot = 0f;
+        //boss stage
+        if(this.healthf()<0.5f) {
+            //basic vars
+            rot += Time.delta * rotSpeed;
+            if (rot >= 360f) rot = 0f;
+            randLen = Mathf.random(0, this.hitSize * 0.5f);
 
-        randLen = Mathf.random(0,this.hitSize*0.25f);
-
-        if(this.damaged()){
-            this.damageMultiplier = 1+Math.min(Math.max(this.maxHealth-this.health,0f),this.maxHealth*0.5f)/this.maxHealth/healthDelta*damageDelta;
-        }
-
-        executorReload += (this.healthf()<=0.5f && executorReload<executor_cooldown) ? Time.delta : 0f;
-        if (executorReload >= executor_cooldown) {
-            Groups.unit.intersect(this.x - eRadius, this.y - eRadius, eRadius * 2f, eRadius * 2f, e->{
-                if(e.team !=this.team && e.type.hittable){
+            //damage all enemy units in radius
+            executorReload += Time.delta;
+            Groups.unit.intersect(this.x - eRadius, this.y - eRadius, eRadius * 2f, eRadius * 2f, e -> {
+                if (e.team != this.team && e.type.hittable) {
                     any = true;
-                    ExecuteApply(e);
-                    CRFx.star.at(e.x,e.y,45,CRColor.starG,e.hitSize*5f);
+                    if(executorReload>=executor_cooldown){
+                        executorReload = 0f;
+                        ExecuteApply(e);
+                        CRFx.star.at(e.x, e.y, 45, CRColor.starG, e.hitSize *2f);
+                    }
                 }
             });
-            executorReload = 0f;
+
         }
     }
 
@@ -95,10 +99,11 @@ public class CRNaviEntity extends UnitWaterMove {
             Drawf.tri(this.x, this.y, len / 11f * warmup, len + (len * 1.5f +randLen)*warmup, rot*rotSpeed*0.5f + i * 90);
         }
         //draw reloadCounter
-        Lines.stroke(2.5f*warmup);
-        CRForceFieldAbility.circlePercent(this.x,this.y,this.hitSize*1.5f*warmup,executorReload/executor_cooldown,0);
+        if(any) {
+            Lines.stroke(2.5f * warmup);
+            CRForceFieldAbility.circlePercent(this.x, this.y, this.hitSize * (warmup+0.5f), executorReload / executor_cooldown, 0);
+        }
 
-        //draw Sword
         Draw.z(z);
     }
 

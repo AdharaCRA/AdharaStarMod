@@ -20,12 +20,7 @@ public class CRStatusEffects {
             @Override
             public void update(Unit unit, float time){
                 super.update(unit,time);
-                if(unit.health<=unit.maxHealth*0.05f){
-                    unit.kill();
-                }
-                //if(unit.controller()==player){
 
-                //}
             }
         };
 
